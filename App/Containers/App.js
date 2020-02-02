@@ -19,6 +19,7 @@ const store = createStore()
  */
 class App extends Component {
   render () {
+	console.disableYellowBox = true; 
     return (
       <Provider store={store}>
         <RootContainer />
@@ -27,7 +28,6 @@ class App extends Component {
   }
 }
 
-// allow reactotron overlay for fast design in dev mode
 export default DebugConfig.useReactotron
   ? console.tron.overlay(App)
   : App

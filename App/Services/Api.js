@@ -1,8 +1,9 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
+import urlPaths, { apiURL, baseURL} from '../Helpers/AppConfiguration'
 
 // our "constructor"
-const create = (baseURL = 'https://api.github.com/') => {
+const create = (baseURL = baseURL + apiURL) => {
   // ------
   // STEP 1
   // ------
@@ -28,15 +29,14 @@ const create = (baseURL = 'https://api.github.com/') => {
   // a thin wrapper of the api layer providing nicer feeling functions
   // rather than "get", "post" and friends.
   //
-  // I generally don't like wrapping the output at this level because
-  // sometimes specific actions need to be take on `403` or `401`, etc.
-  //
-  // Since we can't hide from that, we embrace it by getting out of the
-  // way at this level.
-  //
+
   const getRoot = () => api.get('')
   const getRate = () => api.get('rate_limit')
   const getUser = (username) => api.get('search/users', {q: username})
+
+  const getCurrencyRate = (currency) => {
+    return api.get(urlPaths.currencyRate +currency)
+  }
 
   // ------
   // STEP 3
@@ -50,11 +50,20 @@ const create = (baseURL = 'https://api.github.com/') => {
   // because it is scoped privately.  This is one way to create truly
   // private scoped goodies in JavaScript.
   //
+
+  const parseHeaders = (headers) => {
+    const apiHeaders = {
+      'Content-Type': 'application/json'
+    }
+
+    return apiHeaders
+  }
   return {
     // a list of the API functions from step 2
     getRoot,
     getRate,
-    getUser
+	getUser,
+	getCurrencyRate
   }
 }
 

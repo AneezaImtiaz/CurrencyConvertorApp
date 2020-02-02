@@ -40,6 +40,16 @@ target 'CurrencyConvertor' do
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+  post_install do |installer|
+	installer.pods_project.targets.each do |target|
+	  if target.name == "React"
+		target.remove_from_project
+	  end
+	end
+  end
+  
   target 'CurrencyConvertorTests' do
     inherit! :search_paths
     # Pods for testing
@@ -47,6 +57,8 @@ target 'CurrencyConvertor' do
 
   use_native_modules!
 end
+
+
 
 target 'CurrencyConvertor-tvOS' do
   # Pods for CurrencyConvertor-tvOS
